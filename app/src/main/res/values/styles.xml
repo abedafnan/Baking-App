@@ -8,4 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TitleStyle">
+        <item name="android:padding">@dimen/horizontal_margin</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">@dimen/card_title_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

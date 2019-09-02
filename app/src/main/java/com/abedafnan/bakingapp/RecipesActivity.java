@@ -92,6 +92,8 @@ public class RecipesActivity extends AppCompatActivity implements RecipesAdapter
     @Override
     public void onItemClick(int position) {
         Intent intent = new Intent(this, RecipeDetailActivity.class);
+        Recipe selectedRecipe = mRecipes.get(position);
+        intent.putExtra("recipe", selectedRecipe);
         startActivity(intent);
     }
 }

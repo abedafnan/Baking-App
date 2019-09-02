@@ -24,12 +24,9 @@
 
         <TextView
             android:id="@+id/textView_recipe"
+            style="@style/TitleStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/horizontal_margin"
-            android:textColor="#fff"
-            android:textSize="@dimen/card_title_text_size"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="Recipe Name" />

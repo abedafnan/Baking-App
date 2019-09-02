@@ -2,4 +2,8 @@
     <string name="app_name">Baking App</string>
 
     <string name="description_recipe_image">Recipe Image</string>
+    <string name="description_arrow_image">Right Arrow</string>
+
+    <string name="title_ingredients">Ingredients</string>
+    <string name="title_steps">Steps</string>
 </resources>
