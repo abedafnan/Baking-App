@@ -20,13 +20,16 @@ import com.abedafnan.bakingapp.utils.RetrofitInterface;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RecipesActivity extends AppCompatActivity implements RecipesAdapter.OnItemClickHandler {
 
-    private RecyclerView mRecipesRecycler;
+    @BindView(R.id.recycler_recipes)
+    RecyclerView mRecipesRecycler;
     private RecipesAdapter mRecipesAdapter;
     private List<Recipe> mRecipes;
 
@@ -36,8 +39,8 @@ public class RecipesActivity extends AppCompatActivity implements RecipesAdapter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipes);
+        ButterKnife.bind(this);
 
-        mRecipesRecycler = findViewById(R.id.recycler_recipes);
         mRecipes = new ArrayList<>();
 
         setupRecyclerView();
