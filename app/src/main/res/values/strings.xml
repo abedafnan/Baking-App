@@ -3,7 +3,11 @@
 
     <string name="description_recipe_image">Recipe Image</string>
     <string name="description_arrow_image">Right Arrow</string>
+    <string name="description_thumb_image">Video Thumbnail</string>
 
     <string name="title_ingredients">Ingredients</string>
     <string name="title_steps">Steps</string>
+    <string name="title_instructions">Instructions</string>
+
+    <string name="msg_no_instructions">No Instructions Available</string>
 </resources>

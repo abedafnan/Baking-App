@@ -17,6 +17,7 @@ import com.abedafnan.bakingapp.StepDetailsActivity;
 import com.abedafnan.bakingapp.adapters.IngredientsAdapter;
 import com.abedafnan.bakingapp.adapters.StepsAdapter;
 import com.abedafnan.bakingapp.models.Recipe;
+import com.abedafnan.bakingapp.models.Step;
 
 import java.util.List;
 
@@ -56,11 +57,11 @@ public class RecipeDetailFragment extends Fragment implements StepsAdapter.OnIte
 
     @Override
     public void onItemClick(int position) {
-        mCallback.onStepClicked(position, mRecipe);
+        mCallback.onStepClicked(mRecipe.getSteps().get(position));
     }
 
     public interface OnStepClickListener {
-        void onStepClicked(int position, Recipe recipes);
+        void onStepClicked(Step step);
     }
 
     @Override

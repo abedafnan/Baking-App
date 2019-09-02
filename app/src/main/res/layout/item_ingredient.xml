@@ -12,6 +12,7 @@
         android:layout_weight="1.5"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
+        android:layout_marginEnd="@dimen/vertical_margin_short"
         tools:text="2 cup"/>
 
     <TextView
