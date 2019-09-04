@@ -1,6 +1,7 @@
 package com.abedafnan.bakingapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import com.abedafnan.bakingapp.fragments.RecipeDetailFragment;
 import com.abedafnan.bakingapp.fragments.StepDetailsFragment;
 import com.abedafnan.bakingapp.models.Recipe;
 import com.abedafnan.bakingapp.models.Step;
+import com.google.gson.Gson;
 
 public class RecipeDetailActivity extends AppCompatActivity implements RecipeDetailFragment.OnStepClickListener {
 
@@ -26,6 +28,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
             twoPane = false;
         }
 
+        // Check so it doesn't recreate the fragment on orientation change
         if (savedInstanceState == null) {
 
             // Receive the intent from The recipes list
@@ -69,6 +72,13 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
             RecipeDetailFragment fragment = new RecipeDetailFragment();
             fragment.setArguments(bundle);
 
+            // Store the selected recipe in SharedPreferences
+            SharedPreferences sharedPreferences = getSharedPreferences("bakingapp", MODE_PRIVATE);
+            Gson gson = new Gson();
+            String recipeString = gson.toJson(currentRecipe);
+            sharedPreferences.edit().putString("recipe", recipeString).apply();
+
+            // Display the RecipeDetailFragment
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .add(R.id.container_recipe_detail, fragment)

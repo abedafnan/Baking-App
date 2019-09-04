@@ -21,17 +21,20 @@ public class StepDetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         mStep = (Step) intent.getSerializableExtra("step");
 
-        StepDetailsFragment fragment = new StepDetailsFragment();
+        // Check so it doesn't recreate the fragment on orientation change
+        if (savedInstanceState == null) {
+            StepDetailsFragment fragment = new StepDetailsFragment();
 
-        Bundle bundle = new Bundle();
-        bundle.putString("video_url", mStep.getVideoURL());
-        bundle.putString("thumbnail_url", mStep.getThumbnailURL());
-        bundle.putString("description", mStep.getDescription());
-        fragment.setArguments(bundle);
+            Bundle bundle = new Bundle();
+            bundle.putString("video_url", mStep.getVideoURL());
+            bundle.putString("thumbnail_url", mStep.getThumbnailURL());
+            bundle.putString("description", mStep.getDescription());
+            fragment.setArguments(bundle);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .add(R.id.step_details_container, fragment)
-                .commit();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .add(R.id.step_details_container, fragment)
+                    .commit();
+        }
     }
 }

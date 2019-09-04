@@ -2,6 +2,7 @@ package com.abedafnan.bakingapp.fragments;
 
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -72,9 +73,7 @@ public class StepDetailsFragment extends Fragment {
             mDescription = args.getString("description");
         }
 
-        Log.d("EXO", String.valueOf(mPlaybackPosition));
-        Log.d("EXO", String.valueOf(mPlayWhenReady));
-
+        // Retrieve the playback position if it's previously saved
         if (savedInstanceState != null) {
             mPlaybackPosition = savedInstanceState.getLong(PLAYBACK_POSITION);
             mPlayWhenReady = savedInstanceState.getBoolean(PLAY_WHEN_READY);
@@ -156,7 +155,19 @@ public class StepDetailsFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        releasePlayer();
+        // onSavedInstanceState will be called after onStop on earlier sdk versions
+        if (!TextUtils.isEmpty(mVideoURL) && mExoPlayer != null) {
+            releasePlayer();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // onSavedInstanceState will be called before onStop for older sdk versions
+        if (Util.SDK_INT < Build.VERSION_CODES.P && !TextUtils.isEmpty(mVideoURL)) {
+            releasePlayer();
+        }
     }
 
     @Override
