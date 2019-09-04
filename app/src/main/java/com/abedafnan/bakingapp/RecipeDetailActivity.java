@@ -10,6 +10,7 @@ import com.abedafnan.bakingapp.fragments.RecipeDetailFragment;
 import com.abedafnan.bakingapp.fragments.StepDetailsFragment;
 import com.abedafnan.bakingapp.models.Recipe;
 import com.abedafnan.bakingapp.models.Step;
+import com.abedafnan.bakingapp.widget.RecipeWidgetProvider;
 import com.google.gson.Gson;
 
 public class RecipeDetailActivity extends AppCompatActivity implements RecipeDetailFragment.OnStepClickListener {
@@ -72,11 +73,14 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
             RecipeDetailFragment fragment = new RecipeDetailFragment();
             fragment.setArguments(bundle);
 
-            // Store the selected recipe in SharedPreferences
+            // Store the selected recipe in SharedPreferences (to use in the widget)
             SharedPreferences sharedPreferences = getSharedPreferences("bakingapp", MODE_PRIVATE);
             Gson gson = new Gson();
             String recipeString = gson.toJson(currentRecipe);
             sharedPreferences.edit().putString("recipe", recipeString).apply();
+
+            // Refresh the widget when new recipe is opened
+            RecipeWidgetProvider.sendUpdateBroadcast(this);
 
             // Display the RecipeDetailFragment
             FragmentManager fragmentManager = getSupportFragmentManager();

@@ -3,6 +3,7 @@ package com.abedafnan.bakingapp.widget;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -29,24 +30,17 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget_provider);
 
-        // Crete an intent to open the RecipesActivity when the widget is clicked
-        Intent intent = new Intent(context, RecipesActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        // Send an intent to the service to populate the listView
+        Intent intent = new Intent(context, RecipeWidgetRemoteViewsService.class);
+        views.setRemoteAdapter(R.id.lv_ingredients, intent);
 
-        // Launch pending intent when the widget view is clicked
-        views.setOnClickPendingIntent(R.id.lv_ingredients, pendingIntent);
+        // Create an intent to open the RecipesActivity when the widget is clicked
+        Intent goToActivityIntent = new Intent(context, RecipesActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, goToActivityIntent, 0);
+        views.setOnClickPendingIntent(R.id.tv_recipe_name, pendingIntent);
 
         // Get the name of the last visited recipe and set its name it to the title TextView
-        SharedPreferences sp = context.getSharedPreferences("bakingapp", Context.MODE_PRIVATE);
-        String lastVisitedRecipeString = sp.getString("recipe", "");
-        if (!TextUtils.isEmpty(lastVisitedRecipeString)) {
-            Gson gson = new Gson();
-            cLastVisitedRecipe = gson.fromJson(lastVisitedRecipeString, Recipe.class);
-            cRecipeName = cLastVisitedRecipe.getName();
-        } else {
-            cRecipeName = "No Data Available";
-        }
-
+        cRecipeName = getRecipeName(context);
         views.setTextViewText(R.id.tv_recipe_name, cRecipeName);
 
         // Instruct the widget manager to update the widget
@@ -69,6 +63,42 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
     @Override
     public void onDisabled(Context context) {
         // Enter relevant functionality for when the last widget is disabled
+    }
+
+    // Send a broadcast to update the widget
+    public static void sendUpdateBroadcast(Context context) {
+        Intent intent = new Intent(context, RecipeWidgetProvider.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        context.sendBroadcast(intent);
+    }
+
+    // Called when the broadcast is received
+    @Override
+    public void onReceive(final Context context, Intent intent) {
+        final String action = intent.getAction();
+        if (AppWidgetManager.ACTION_APPWIDGET_UPDATE.equals(action)) {
+            // refresh all widgets
+            AppWidgetManager manager = AppWidgetManager.getInstance(context);
+            ComponentName cn = new ComponentName(context, RecipeWidgetProvider.class);
+            manager.notifyAppWidgetViewDataChanged(manager.getAppWidgetIds(cn), R.id.lv_ingredients);
+
+            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget_provider);
+            views.setTextViewText(R.id.tv_recipe_name, getRecipeName(context));
+            manager.updateAppWidget(cn, views);
+        }
+        super.onReceive(context, intent);
+    }
+
+    private static String getRecipeName(Context context) {
+        SharedPreferences sp = context.getSharedPreferences("bakingapp", Context.MODE_PRIVATE);
+        String lastVisitedRecipeString = sp.getString("recipe", "");
+        if (!TextUtils.isEmpty(lastVisitedRecipeString)) {
+            Gson gson = new Gson();
+            cLastVisitedRecipe = gson.fromJson(lastVisitedRecipeString, Recipe.class);
+            return cLastVisitedRecipe.getName();
+        } else {
+            return "No Data Available";
+        }
     }
 }
 

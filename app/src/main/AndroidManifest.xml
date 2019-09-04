@@ -31,7 +31,9 @@
         </activity>
         <activity android:name=".StepDetailsActivity" />
 
-        <service android:name=".widget.RecipeWidgetService" />
+        <service
+            android:name=".widget.RecipeWidgetRemoteViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 </manifest>
