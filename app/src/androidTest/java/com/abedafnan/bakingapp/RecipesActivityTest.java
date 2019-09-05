@@ -18,9 +18,11 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.anything;
+import static org.hamcrest.CoreMatchers.instanceOf;
 
 @RunWith(AndroidJUnit4.class)
 public class RecipesActivityTest {
@@ -38,14 +40,12 @@ public class RecipesActivityTest {
     }
 
     @Test
-    public void checkRecyclerText() {
-        onView(ViewMatchers.withId(R.id.recycler_recipes)).perform(RecyclerViewActions.scrollToPosition(1));
-        onView(withText("Brownies")).check(matches(isDisplayed()));
-    }
+    public void checkIfRecyclerViewIsWorking() {
+        onView(withId(R.id.recycler_recipes))
+                .check(matches(isEnabled()));
 
-    @Test
-    public void testRecipesRecycler() {
-        onData(anything()).inAdapterView(withId(R.id.recycler_recipes)).atPosition(0).perform(click());
+        onView(withId(R.id.recycler_recipes))
+                .check(matches(isDisplayed()));
     }
 
     @After

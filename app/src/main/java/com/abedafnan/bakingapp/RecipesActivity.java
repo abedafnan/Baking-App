@@ -102,6 +102,10 @@ public class RecipesActivity extends AppCompatActivity implements RecipesAdapter
                     mRecipes.clear();
                     mRecipes.addAll(recipeList);
                     mRecipesAdapter.notifyDataSetChanged();
+
+                    if (idlingResource != null) {
+                        idlingResource.setIdleState(true);
+                    }
                 }
             }
 
