@@ -2,6 +2,10 @@ package com.abedafnan.bakingapp;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,6 +20,7 @@ import com.abedafnan.bakingapp.adapters.RecipesAdapter;
 import com.abedafnan.bakingapp.models.Recipe;
 import com.abedafnan.bakingapp.utils.RetrofitClient;
 import com.abedafnan.bakingapp.utils.RetrofitInterface;
+import com.abedafnan.bakingapp.utils.SimpleIdlingResource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +40,18 @@ public class RecipesActivity extends AppCompatActivity implements RecipesAdapter
 
     private ProgressBar mProgressBar;
 
+    @Nullable
+    private SimpleIdlingResource mIdlingResource;
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = new SimpleIdlingResource();
+        }
+        return mIdlingResource;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +60,10 @@ public class RecipesActivity extends AppCompatActivity implements RecipesAdapter
 
         mRecipes = new ArrayList<>();
 
+        getIdlingResource();
+
         setupRecyclerView();
-        showRecipes();
+        showRecipes(mIdlingResource);
     }
 
     public void setupRecyclerView() {
@@ -62,10 +81,14 @@ public class RecipesActivity extends AppCompatActivity implements RecipesAdapter
         mRecipesRecycler.setLayoutManager(layoutManager);
     }
 
-    private void showRecipes() {
+    private void showRecipes(final SimpleIdlingResource idlingResource) {
         // Show the progressbar while waiting for data to load
         mProgressBar = findViewById(R.id.progressbar);
         mProgressBar.setVisibility(View.VISIBLE);
+
+        if (idlingResource != null) {
+            idlingResource.setIdleState(false);
+        }
 
         RetrofitInterface service = RetrofitClient.getRetrofitInstance().create(RetrofitInterface.class);
         Call<List<Recipe>> call = service.getRecipes();
