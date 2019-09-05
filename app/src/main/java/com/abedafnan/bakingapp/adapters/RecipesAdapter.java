@@ -18,6 +18,9 @@ import org.w3c.dom.Text;
 import java.util.List;
 import java.util.zip.Inflater;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesViewHolder> {
 
     private List<Recipe> mRecipes;
@@ -73,16 +76,16 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesV
         void onItemClick(int position);
     }
 
-    class RecipesViewHolder extends RecyclerView.ViewHolder {
+    public class RecipesViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.imageView_recipe)
         ImageView recipeImage;
+        @BindView(R.id.textView_recipe)
         TextView recipeName;
 
         RecipesViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            recipeImage = itemView.findViewById(R.id.imageView_recipe);
-            recipeName = itemView.findViewById(R.id.textView_recipe);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

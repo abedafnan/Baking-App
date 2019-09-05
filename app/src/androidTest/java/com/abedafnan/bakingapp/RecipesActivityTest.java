@@ -7,6 +7,8 @@ import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.abedafnan.bakingapp.adapters.RecipesAdapter;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -17,6 +19,7 @@ import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -46,6 +49,18 @@ public class RecipesActivityTest {
 
         onView(withId(R.id.recycler_recipes))
                 .check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void checkRecyclerViewItemText() {
+        // First, scroll to the position that needs to be matched and click on it.
+        onView(ViewMatchers.withId(R.id.recycler_recipes))
+                .perform(RecyclerViewActions.<RecipesAdapter.RecipesViewHolder>scrollToPosition(1));
+
+        // Match the text in the item mathes what's expected.
+        String itemElementText = mTestRule.getActivity().getResources()
+                .getString(R.string.item_element_string);
+        onView(withText(itemElementText)).check(matches(isDisplayed()));
     }
 
     @After

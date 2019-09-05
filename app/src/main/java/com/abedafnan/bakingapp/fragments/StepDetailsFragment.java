@@ -147,7 +147,15 @@ public class StepDetailsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if (!TextUtils.isEmpty(mVideoURL)) {
+        if (!TextUtils.isEmpty(mVideoURL) && Util.SDK_INT > 23) {
+            initializePlayer(Uri.parse(mVideoURL));
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!TextUtils.isEmpty(mVideoURL) && (Util.SDK_INT <= 23 || mExoPlayer == null)) {
             initializePlayer(Uri.parse(mVideoURL));
         }
     }
