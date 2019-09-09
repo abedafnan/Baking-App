@@ -15,17 +15,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.CoreMatchers.anything;
-import static org.hamcrest.CoreMatchers.instanceOf;
 
 @RunWith(AndroidJUnit4.class)
 public class RecipesActivityTest {
@@ -57,7 +52,7 @@ public class RecipesActivityTest {
         onView(ViewMatchers.withId(R.id.recycler_recipes))
                 .perform(RecyclerViewActions.<RecipesAdapter.RecipesViewHolder>scrollToPosition(1));
 
-        // Match the text in the item mathes what's expected.
+        // Match the text in the item matches what's expected.
         String itemElementText = mTestRule.getActivity().getResources()
                 .getString(R.string.item_element_string);
         onView(withText(itemElementText)).check(matches(isDisplayed()));
