@@ -24,8 +24,8 @@ This project is about productionizing an app, taking it from a functional state 
 * Support design libraries
 
 ### Screenshots:
-![Recipes List](https://octodex.github.com/images/yaktocat.png)
-![Recipe Details](https://octodex.github.com/images/yaktocat.png)
-![Step](https://octodex.github.com/images/yaktocat.png)
-![App Widget](https://octodex.github.com/images/yaktocat.png)
-![Tablet View](https://octodex.github.com/images/yaktocat.png)
+![Recipes List](screenshots/screen1.PNG)
+![Recipe Details](screenshots/screen2.PNG)
+![Step](screenshots/screen3.PNG)
+![App Widget](screenshots/widget.PNG)
+![Tablet View](screenshots/tablet.PNG)
